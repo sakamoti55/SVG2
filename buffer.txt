@@ -1,0 +1,59 @@
+import { useEffect, useState } from "react";
+
+function Chart (props){
+    const { data } = props;
+    console.log(data)
+    const leftMargin    = 50;
+    const rightMargin   = 500;
+    const topMargin     = 50;
+    const bottomMargin  = 100;
+    const contentWidth  = 600;
+    const contentHeight = 600;
+
+
+    const svgWidth = leftMargin + contentWidth  + rightMargin;
+    const svgHight = topMargin  + contentHeight + bottomMargin;
+ 
+    const color = d3.scaleOrdinal(d3.schemeCategory10)
+    const max_sepal_length = d3.max(data,(item)=>item.sepalLength);
+    console.log(112)   
+    const min_sepal_length = d3.min(data,(item)=>item.sepalLength);
+    const max_sepal_width  = d3.max(data,(item)=>item.sepalWidth);
+    const min_sepal_width  = d3.min(data,(item)=>item.sepalWidth);
+
+    console.log(rightMargin)
+    const xScale = d3.scaleLinear()
+      .domain([min_sepal_length,max_sepal_length])
+      .range([0,contentWidth]) 
+      .nice();
+
+    const yScale = d3.scaleLinear()
+      .domain([min_sepal_width,max_sepal_width])
+      .range([0,contentHeight])
+      .nice();
+    
+    return (
+      <svg width={svgWidth} height={svgHight}>
+        <g transform={`translate(${leftMargin},${topMargin})`}>
+
+        </g>
+      </svg>
+    ); 
+}
+
+function App (){
+    const [data,setData] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+          const url = await fetch("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2004014/iris.json");
+          
+          const result = await url.json();
+          setData(result);
+        };
+    
+        fetchData();
+    }, []); 
+    return <Chart data={data} />
+}
+
+export default App;
