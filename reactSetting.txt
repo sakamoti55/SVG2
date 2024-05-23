@@ -2,6 +2,7 @@ npm init -y
 npm install --save-dev vite @vitejs/plugin-react
 npm install react react-dom
 npm install bulma
+npm install d3
 
 testのところを
 
@@ -11,18 +12,25 @@ testのところを
 
 に変更
 
-: d3.js
+/*もう使わない
 <head>//index.htmlのheadの下にコピペ
     <script src="https://d3js.org/d3.v7.min.js"></script>
+*/
+  
 ----------------------------------------------------------------------------------------------------------
 : vite.config.js 
 
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-export default defineConfig({
-  plugins: [react()],
-});
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>React Tutorial</title>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
 ----------------------------------------------------------------------------------------------------------
 : index.html 
 
