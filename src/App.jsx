@@ -1,14 +1,29 @@
 import { useState,useEffect } from "react";
 
-function changeData(i){
-  console.log("aaa")
-
-} 
 function Chart (props){ 
+  const [keepTF,setKeepTF] = useState([true,true,true]); // データ表示on(true) off(false)
+
+  function changeData(i){
+    console.log(i);
+    /*
+    const newKeepTF = keepTF;
+    newKeepTF[i] = !newKeepTF[i];
+    console.log(newKeepTF)
+    console.log(keepTF)
+    このやり方だと、keepTFの中身も変わってしまい、keepTFとnewKeepTFの中身に変化がないため、
+    再レンダリングが起きない。→関数の中で処理が終わってしまう
+    */
+    const newKeepTF = [...keepTF];//コピーをnewKeepTFにぶち込むことで、keepTFの中身を保持する
+    newKeepTF[i] = !newKeepTF[i];
+    console.log(newKeepTF);
+    console.log(keepTF);
+    
+    setKeepTF(newKeepTF);
+  }  
+  console.log(keepTF)
   // const data = props.data;
   const {data} = props;
 
-  console.log(data); 
   const leftMargin    = 100;
   const rightMargin   = 500;
   const topMargin     = 100;
@@ -138,7 +153,7 @@ function Chart (props){
           </g>
           {/* データのプロット */}
           {
-            arraySpecies.map((e)=>{
+            arraySpecies.map((e,j)=>{
               /*
               return (
                 
@@ -159,8 +174,13 @@ function Chart (props){
                 data.filter(({species},i)=>species===e)
                   .map((e1)=>{
                     // e1[keepX]でe1内のプロパティ値keepXにアクセス
-                    return <circle cx={xScale(e1[keepX])} cy={yScale(e1[keepY])} r='5' fill={color(e)} /> 
-
+                    if(keepTF[j]==true){
+                      console.log(keepTF[j])
+                      return <circle cx={xScale(e1[keepX])} cy={yScale(e1[keepY])} r='5' fill={color(e)} /> 
+                    }else{
+                      return <circle cx={xScale(e1[keepX])} cy={yScale(e1[keepY])} r='5' fill={color(e)} fill-opacity="0" />
+                    }
+                    
                   })
                   
               )
@@ -173,6 +193,9 @@ function Chart (props){
                 <g transform={`translate(0,${i*30})`}>
 
                   <rect x={contentWidth} y='0' width='10' height='10' fill={color(e)} onClick={() => changeData(i)}/>
+                  {
+                    console.log(color(e))
+                  }
                   <text x={contentWidth+15} y='10'>{e}</text>
                 </g>
               )
