@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react";
+import '/style.css'; 
 
 function Chart (props){ 
   const [keepTF,setKeepTF] = useState([true,true,true]); // データ表示on(true) off(false)
@@ -64,62 +65,79 @@ function Chart (props){
   const [keepY, setKeepY] = useState("sepalWidth");
   const allSpecies = new Array("sepalLength","sepalWidth","petalLength","petalWidth")
 
+  let propatyX;
+  let propatyY;
+  if(keepX==="sepalLength")propatyX="Sepal Length";
+  if(keepX==="sepalWidth") propatyX="Sepal Width";
+  if(keepX==="petalLength")propatyX="Petal Length";
+  if(keepX==="petalWidth") propatyX="Petal Width";
+  if(keepY==="sepalLength")propatyY="Sepal Length";
+  if(keepY==="sepalWidth") propatyY="Sepal Width";
+  if(keepY==="petalLength")propatyY="Petal Length";
+  if(keepY==="petalWidth") propatyY="Petal Width";
+
   return (
     <div>
       <div>
-      <select 
-        id="x" 
-        onChange={(event) => {
-          setKeepX(event.target.value);
-          if (event.target.value === "sepalLength") {
-            setKeepMaxX(max_sepal_length);
-            setKeepMinX(min_sepal_length);
-          } else if (event.target.value === "sepalWidth") {
-            setKeepMaxX(max_sepal_width);
-            setKeepMinX(min_sepal_width);
-          } else if (event.target.value === "petalLength") {
-            setKeepMaxX(max_petal_length);
-            setKeepMinX(min_petal_length);
-          } else if (event.target.value === "petalWidth") {
-            setKeepMaxX(max_petal_width);
-            setKeepMinX(min_petal_width);
-          }
-        }}
-        value={keepX}
-        
-        >
-        {data && allSpecies.map((speciesX) => (
-          <option key={speciesX} value={speciesX}>
-            {speciesX}
-          </option>
-        ))}
-      </select>
-      <select 
-        id="y" 
-        onChange={(event) => {
-          setKeepY(event.target.value);
-          if (event.target.value === "sepalLength") {
-            setKeepMaxY(max_sepal_length);
-            setKeepMinY(min_sepal_length);
-          } else if (event.target.value === "sepalWidth") {
-            setKeepMaxY(max_sepal_width);
-            setKeepMinY(min_sepal_width);
-          } else if (event.target.value === "petalLength") {
-            setKeepMaxY(max_petal_length);
-            setKeepMinY(min_petal_length);
-          } else if (event.target.value === "petalWidth") {
-            setKeepMaxY(max_petal_width);
-            setKeepMinY(min_petal_width);
-          }
-        }}
-        value={keepY}
-        >
-        {data && allSpecies.map((speciesY) => (
-          <option key={speciesY} value={speciesY}>
-            {speciesY}
-          </option>
-        ))}
-      </select>
+        <h4 style={{margin:"auto"}}>Horizontal Axis</h4>
+        <div>
+          <select 
+            id="x" 
+            onChange={(event) => {
+              setKeepX(event.target.value);
+              if (event.target.value === "sepalLength") {
+                setKeepMaxX(max_sepal_length);
+                setKeepMinX(min_sepal_length);
+              } else if (event.target.value === "sepalWidth") {
+                setKeepMaxX(max_sepal_width);
+                setKeepMinX(min_sepal_width);
+              } else if (event.target.value === "petalLength") {
+                setKeepMaxX(max_petal_length);
+                setKeepMinX(min_petal_length);
+              } else if (event.target.value === "petalWidth") {
+                setKeepMaxX(max_petal_width);
+                setKeepMinX(min_petal_width);
+              }
+            }}
+            value={keepX}
+
+            >
+            {data && allSpecies.map((speciesX) => (
+              <option key={speciesX} value={speciesX}>
+                {speciesX}
+              </option>
+            ))}
+          </select>
+        </div>
+        <h4 style={{margin:"auto"}}>Vertical Axis</h4>
+        <div>
+          <select 
+            id="y" 
+            onChange={(event) => {
+              setKeepY(event.target.value);
+              if (event.target.value === "sepalLength") {
+                setKeepMaxY(max_sepal_length);
+                setKeepMinY(min_sepal_length);
+              } else if (event.target.value === "sepalWidth") {
+                setKeepMaxY(max_sepal_width);
+                setKeepMinY(min_sepal_width);
+              } else if (event.target.value === "petalLength") {
+                setKeepMaxY(max_petal_length);
+                setKeepMinY(min_petal_length);
+              } else if (event.target.value === "petalWidth") {
+                setKeepMaxY(max_petal_width);
+                setKeepMinY(min_petal_width);
+              }
+            }}
+            value={keepY}
+            >
+            {data && allSpecies.map((speciesY) => (
+              <option key={speciesY} value={speciesY}>
+                {speciesY}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div>
       <svg width={svgWidth} height={svgHight}>
@@ -147,9 +165,9 @@ function Chart (props){
           <line x1='0' y1={contentHeight} x2={contentWidth} y2={contentHeight} stroke='grey' />
           <line x1='0' y1='0' x2='0' y2={contentHeight+5} stroke='grey' />
           {/* 外側のプロパティネーム */}
-          <text x={contentWidth/2} y={contentHeight+40} textAnchor="middle">Sepal Length</text>
+          <text x={contentWidth/2} y={contentHeight+40} textAnchor="middle">{propatyX}</text>
           <g transform="translate(-240,180)rotate(-90)">
-            <text x='-20' y={contentHeight/2} textAnchor="middle" >Sepal Width</text>
+            <text x='-20' y={contentHeight/2} textAnchor="middle" >{propatyY}</text>
           </g>
           {/* データのプロット */}
           {
@@ -174,15 +192,23 @@ function Chart (props){
                 data.filter(({species},i)=>species===e)
                   .map((e1)=>{
                     // e1[keepX]でe1内のプロパティ値keepXにアクセス
+                    /*
                     if(keepTF[j]==true){
                       console.log(keepTF[j])
                       return <circle cx={xScale(e1[keepX])} cy={yScale(e1[keepY])} r='5' fill={color(e)} /> 
                     }else{
                       return <circle cx={xScale(e1[keepX])} cy={yScale(e1[keepY])} r='5' fill={color(e)} fill-opacity="0" />
-                    }
-                    
+                    }       
+                    */
+                    return <circle style={{transition: "cx 1s, cy 1s, opacity 1s"}}
+
+                      cx={xScale(e1[keepX])} 
+                      cy={yScale(e1[keepY])} 
+                      r='5' 
+                      fill={color(e)} 
+                      fill-opacity={keepTF[j] ?"1":"0"} />        
                   })
-                  
+                
               )
             })
           }

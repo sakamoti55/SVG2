@@ -1,0 +1,14 @@
+/*
+circle {
+    transition: cx 1s, cy 1s, opacity 1s;
+}
+*/
+
+select {
+    display: block;/*ブロック要素として表示(よくわからん)*/
+    width: 130px;
+    height: 40px;
+    margin: 5px 0px;
+    padding: 8px;
+    font-size: 17px;
+}
